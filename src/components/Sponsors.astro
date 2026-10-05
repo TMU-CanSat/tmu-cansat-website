@@ -1,0 +1,30 @@
+---
+import { Image } from 'astro:assets';
+import muesLogo from '../assets/mues-logo.png';
+---
+
+<section id="sponsors" class="section" aria-labelledby="sponsors-heading">
+  <div class="section-head">
+    <h2 id="sponsors-heading">Our Sponsors</h2>
+  </div>
+  <ul class="bento bento--compact sponsor-grid">
+    <li class="tile sponsor__logo">
+      <Image src={muesLogo} alt="Metropolitan Undergraduate Engineering Society (MUES)" width={220} densities={[1, 2]} />
+    </li>
+  </ul>
+</section>
+
+<style>
+  .sponsor-grid {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .sponsor__logo {
+    display: grid;
+    place-items: center;
+    min-height: 156px;
+    padding: 24px;
+    background: #fff;
+  }
+</style>

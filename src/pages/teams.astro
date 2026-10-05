@@ -1,0 +1,59 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import { teams } from '../data/site';
+---
+
+<Base title="Teams — TMU CanSat">
+  <Header />
+
+  <main class="container">
+    <section class="section">
+      <div class="section-head">
+        <h2>Our Teams</h2>
+      </div>
+      <div class="bento bento--compact">
+        {
+          teams.map((team, i) => (
+            <article id={team.slug} class:list={['tile', 'soon', i === 0 && 'span-2']}>
+              <h3>{team.name}</h3>
+              <span class="soon__badge">Coming soon</span>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+  </main>
+
+</Base>
+
+<style>
+  main {
+    padding-top: 8px;
+    padding-bottom: 56px;
+  }
+  .soon {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 22px 26px;
+    border-style: dashed;
+    border-color: var(--line-strong);
+  }
+  .soon h3 {
+    font-size: 1.4rem;
+    font-style: italic;
+  }
+  .soon__badge {
+    flex-shrink: 0;
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--line-strong);
+    color: var(--grey);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+</style>
