@@ -1,0 +1,75 @@
+---
+import Icon from './Icon.astro';
+import { socials } from '../data/site';
+---
+
+<ul class="socials">
+  {
+    socials.map((s) => (
+      <li>
+        <a
+          href={s.href}
+          class={`socials__link socials__link--${s.icon}`}
+          aria-label={s.name}
+          title={s.name}
+          target={s.icon === 'mail' ? undefined : '_blank'}
+          rel="noopener"
+        >
+          <Icon name={s.icon} size={18} />
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .socials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .socials__link {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    color: var(--white);
+    background: rgba(251, 251, 251, 0.06);
+    border: 1px solid var(--line-strong);
+    transition:
+      background 0.2s ease,
+      color 0.2s ease,
+      border-color 0.2s ease,
+      transform 0.2s ease;
+  }
+  .socials__link:hover {
+    transform: translateY(-2px);
+    border-color: transparent;
+  }
+  .socials__link--mail:hover {
+    background: var(--yellow);
+    color: var(--black);
+  }
+  .socials__link--linkedin:hover {
+    background: #0a66c2;
+  }
+  .socials__link--github:hover {
+    background: var(--white);
+    color: var(--black);
+  }
+  .socials__link--instagram:hover {
+    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fd5949 45%, #d6249f 60%, #285aeb 90%);
+  }
+  .socials__link--discord:hover {
+    background: #5865f2;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .socials__link:hover {
+      transform: none;
+    }
+  }
+</style>

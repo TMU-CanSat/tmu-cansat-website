@@ -1,0 +1,337 @@
+---
+import { timeline } from '../data/site';
+
+const milestones = [...timeline].reverse();
+---
+
+<awards-timeline class="awards-timeline">
+  <div class="timeline__header">
+    <span class="eyebrow">Our journey</span>
+    <div class="timeline__controls" data-controls hidden>
+      <span class="timeline__count" data-count role="status" aria-live="polite" aria-atomic="true"></span>
+      <button type="button" class="timeline__arrow" data-previous aria-label="Previous milestone">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M19 12H5m7-7-7 7 7 7" />
+        </svg>
+      </button>
+      <button type="button" class="timeline__arrow" data-next aria-label="Next milestone">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 12h14m-7-7 7 7-7 7" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="timeline__panels">
+    {milestones.map((milestone, index) => (
+      <article class="milestone" id={`award-panel-${index}`} data-panel>
+        <div class="milestone__date">
+          <span class="milestone__year">{milestone.year.split('-')[0]}</span>
+          {milestone.year.includes('-') && (
+            <span class="milestone__range">— {milestone.year.split('-')[1]}</span>
+          )}
+        </div>
+        <div class="milestone__story">
+          <h3>{milestone.title}</h3>
+          <p>{milestone.body}</p>
+        </div>
+      </article>
+    ))}
+  </div>
+
+  <div class="timeline__navigation" data-navigation hidden>
+    <div class="timeline__track" role="tablist" aria-label="Awards by year">
+      {milestones.map((milestone, index) => (
+        <button
+          type="button"
+          class="timeline__tab"
+          id={`award-tab-${index}`}
+          role="tab"
+          aria-controls={`award-panel-${index}`}
+          aria-selected="false"
+          tabindex="-1"
+        >
+          <span class="timeline__dot" aria-hidden="true"></span>
+          <span>{milestone.year.replace('-', '–')}</span>
+        </button>
+      ))}
+    </div>
+  </div>
+</awards-timeline>
+
+<script>
+  class AwardsTimeline extends HTMLElement {
+    connectedCallback() {
+      if (this.dataset.enhanced) return;
+
+      const tabs = Array.from(this.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+      const panels = Array.from(this.querySelectorAll<HTMLElement>('[data-panel]'));
+      const previous = this.querySelector<HTMLButtonElement>('[data-previous]');
+      const next = this.querySelector<HTMLButtonElement>('[data-next]');
+      const count = this.querySelector<HTMLElement>('[data-count]');
+      const navigation = this.querySelector<HTMLElement>('[data-navigation]');
+      const controls = this.querySelector<HTMLElement>('[data-controls]');
+      if (!tabs.length || !previous || !next || !count || !navigation || !controls) return;
+
+      let selected = tabs.length - 1;
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+      const select = (index: number, focusTab = false, animate = true) => {
+        selected = index;
+        tabs.forEach((tab, position) => {
+          const active = position === selected;
+          tab.setAttribute('aria-selected', String(active));
+          tab.tabIndex = active ? 0 : -1;
+          panels[position].hidden = !active;
+        });
+        previous.disabled = selected === 0;
+        next.disabled = selected === tabs.length - 1;
+        count.textContent = `${String(selected + 1).padStart(2, '0')} / ${String(tabs.length).padStart(2, '0')}`;
+        count.setAttribute('aria-label', `Milestone ${selected + 1} of ${tabs.length}: ${tabs[selected].textContent?.trim()}`);
+
+        const tab = tabs[selected];
+        if (focusTab) tab.focus({ preventScroll: true });
+        const tabBounds = tab.getBoundingClientRect();
+        const railBounds = navigation.getBoundingClientRect();
+        navigation.scrollTo({
+          left: navigation.scrollLeft + tabBounds.left - railBounds.left - (navigation.clientWidth - tabBounds.width) / 2,
+          behavior: animate && !reducedMotion.matches ? 'smooth' : 'instant',
+        });
+      };
+
+      panels.forEach((panel, index) => {
+        panel.setAttribute('role', 'tabpanel');
+        panel.setAttribute('aria-labelledby', tabs[index].id);
+        panel.tabIndex = 0;
+      });
+
+      tabs.forEach((tab, index) => {
+        tab.addEventListener('click', () => select(index));
+        tab.addEventListener('keydown', (event) => {
+          let target: number;
+          switch (event.key) {
+            case 'ArrowLeft': target = (index - 1 + tabs.length) % tabs.length; break;
+            case 'ArrowRight': target = (index + 1) % tabs.length; break;
+            case 'Home': target = 0; break;
+            case 'End': target = tabs.length - 1; break;
+            default: return;
+          }
+          event.preventDefault();
+          select(target, true);
+        });
+      });
+
+      previous.addEventListener('click', () => select(Math.max(0, selected - 1)));
+      next.addEventListener('click', () => select(Math.min(tabs.length - 1, selected + 1)));
+      this.dataset.enhanced = 'true';
+      controls.hidden = false;
+      navigation.hidden = false;
+      select(selected, false, false);
+    }
+  }
+
+  customElements.define('awards-timeline', AwardsTimeline);
+</script>
+
+<style>
+  .awards-timeline {
+    display: block;
+    background: var(--tile);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius);
+  }
+  .timeline__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 24px 32px 0;
+  }
+  .timeline__controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .timeline__count {
+    margin-right: 12px;
+    color: var(--muted);
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .timeline__arrow {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid var(--line-strong);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--white);
+    cursor: pointer;
+    transition: color 0.2s, background 0.2s, border-color 0.2s;
+  }
+  .timeline__arrow:hover:not(:disabled) {
+    background: var(--yellow);
+    border-color: var(--yellow);
+    color: var(--black);
+  }
+  .timeline__arrow:disabled {
+    opacity: 0.3;
+    cursor: default;
+  }
+  .milestone {
+    display: grid;
+    grid-template-columns: minmax(180px, 0.8fr) minmax(0, 2fr);
+    align-items: center;
+    gap: 48px;
+    min-height: 280px;
+    padding: 32px 48px 40px;
+  }
+  .milestone__date {
+    display: grid;
+    align-content: center;
+    border-right: 1px solid var(--line-strong);
+    min-height: 140px;
+    color: var(--yellow);
+    font-family: var(--font-display);
+    line-height: 1;
+  }
+  .milestone__year {
+    font-size: clamp(3.5rem, 7vw, 5.5rem);
+    font-weight: 700;
+    letter-spacing: -0.06em;
+  }
+  .milestone__range {
+    margin-top: 12px;
+    font-size: 1.25rem;
+  }
+  .milestone__story h3 {
+    margin-bottom: 16px;
+    font-size: clamp(1.7rem, 3vw, 2.3rem);
+    font-style: italic;
+  }
+  .milestone__story p {
+    max-width: 64ch;
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+  .timeline__navigation {
+    margin: 0 32px;
+    padding: 4px 4px 24px;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--line-strong) transparent;
+  }
+  .timeline__track {
+    display: flex;
+    min-width: max-content;
+  }
+  .timeline__tab {
+    position: relative;
+    display: flex;
+    flex: 1 0 116px;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    min-height: 76px;
+    padding: 12px 8px 8px;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--muted);
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .timeline__tab::before {
+    content: '';
+    position: absolute;
+    top: 18px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--line-strong);
+  }
+  .timeline__tab:first-child::before {
+    left: 50%;
+  }
+  .timeline__tab:last-child::before {
+    right: 50%;
+  }
+  .timeline__dot {
+    position: relative;
+    width: 13px;
+    height: 13px;
+    border: 2px solid var(--grey);
+    border-radius: 50%;
+    background: var(--tile-solid);
+    transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+  }
+  .timeline__tab:hover,
+  .timeline__tab[aria-selected='true'] {
+    color: var(--yellow);
+  }
+  .timeline__tab:hover .timeline__dot {
+    border-color: var(--yellow);
+  }
+  .timeline__tab[aria-selected='true'] .timeline__dot {
+    background: var(--yellow);
+    border-color: var(--yellow);
+    box-shadow: 0 0 0 5px rgba(250, 218, 0, 0.12);
+  }
+  [hidden] {
+    display: none;
+  }
+  @media (max-width: 700px) {
+    .timeline__header {
+      padding: 20px 24px 0;
+    }
+    .timeline__controls {
+      gap: 6px;
+    }
+    .timeline__count {
+      margin-right: 4px;
+    }
+    .milestone {
+      grid-template-columns: minmax(0, 1fr);
+      align-content: start;
+      gap: 24px;
+      min-height: 380px;
+      padding: 28px 24px;
+    }
+    .milestone__date {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      min-height: 0;
+      border: 0;
+    }
+    .milestone__range {
+      margin-top: 0;
+    }
+    .timeline__navigation {
+      margin: 0 20px;
+      padding-bottom: 20px;
+    }
+  }
+  @media (max-width: 380px) {
+    .timeline__header {
+      gap: 8px;
+      padding-inline: 20px;
+    }
+    .timeline__count {
+      font-size: 0.75rem;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .timeline__arrow,
+    .timeline__dot {
+      transition: none;
+    }
+  }
+</style>

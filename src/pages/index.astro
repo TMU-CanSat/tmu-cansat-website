@@ -1,0 +1,289 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Socials from '../components/Socials.astro';
+import AwardsTimeline from '../components/AwardsTimeline.astro';
+import Sponsors from '../components/Sponsors.astro';
+import { email } from '../data/site';
+import stars from '../assets/stars.png';
+import teamPhoto from '../assets/team_photo.jpg';
+import logo from '../assets/logo.png';
+---
+
+<Base>
+  <Header />
+
+  <main id="top" class="container">
+    <!-- ===== Hero ===== -->
+    <section class="bento hero" aria-label="Introduction">
+      <div class="tile tile--flush span-2 row-2 hero__main">
+        <Image src={stars} alt="" class="hero__bg" widths={[800, 1400]} sizes="(max-width: 600px) 100vw, 600px" loading="eager" />
+        <div class="hero__content">
+          <h1>TMU<br /><span>CanSat</span></h1>
+          <p>Toronto Metropolitan University's Satellite Development Team</p>
+        </div>
+      </div>
+
+      <div class="tile tile--flush span-2 row-2 photo">
+        <Image
+          src={teamPhoto}
+          alt="TMU CanSat team members holding a Canadian flag beside their CanSat rocket"
+          widths={[600, 900, 1200]}
+          sizes="(max-width: 960px) 100vw, 600px"
+          loading="eager"
+        />
+      </div>
+
+      <div class="tile tile--yellow span-4 intro">
+        <p>
+          TMU CanSat is a team of passionate students from Toronto Metropolitan University who love designing and
+          building Pico-Satellites. We're proud to be Canada's most successful team at the annual CANSAT competition.
+          We've earned awards for our innovative and award-winning designs. Driven by creativity and teamwork, we're
+          constantly pushing the boundaries of what's possible.
+        </p>
+      </div>
+
+    </section>
+
+    <!-- ===== About ===== -->
+    <section id="about" class="section">
+      <div class="section-head">
+        <h2>About Us</h2>
+      </div>
+      <div class="bento">
+        <article class="tile span-4 about">
+          <p>
+            We are TMU CanSat - a team of passionate students from Toronto Metropolitan University who share a love for
+            space and engineering. Our focus? Designing and building Pico-Satellites that push the boundaries of what's
+            possible. Over the years, we've made a name for ourselves as Canada's most successful team at the annual
+            CANSAT competition, where we've tackled challenges, won awards, and proudly represented TMU on the global
+            stage. We had our ups and downs, but we are definitely in our ups now. Our team is a mix of students from
+            diverse disciplines and all kinds of backgrounds, working together to turn creative ideas into real, working
+            satellites. We're all about learning, innovating, and sharing our passion with the world. At TMU CanSat,
+            it's not just about the satellites, it's about the journey, the teamwork, and the love for what we do.
+          </p>
+          <p class="about__cta">Come join us and see how high we can go!</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===== Awards ===== -->
+    <section id="awards" class="section">
+      <div class="section-head">
+        <h2>Awards</h2>
+      </div>
+      <AwardsTimeline />
+    </section>
+
+    <!-- ===== Sponsors ===== -->
+    <Sponsors />
+
+    <!-- ===== Contact ===== -->
+    <section id="contact" class="section">
+      <div class="section-head">
+        <h2>Contact</h2>
+      </div>
+      <div class="bento">
+        <div class="tile span-2 row-2 contact">
+          <div class="contact__identity">
+            <address class="contact__address">
+              <p class="contact__org">Toronto Metropolitan University</p>
+              <p class="contact__org">Attn: TMU CanSat</p>
+              <p>Kerr Hall East - Room 40D</p>
+              <p>350 Victoria Street</p>
+              <p>Toronto, ON M5B 2K3</p>
+              <p><span aria-hidden="true">🇨🇦</span> Canada</p>
+            </address>
+            <Image src={logo} alt="TMU CanSat logo" width={80} height={80} densities={[1, 2]} quality={90} class="contact__logo" />
+          </div>
+          <div class="contact__item">
+            <p>
+              Have a question? Get in touch by email or through our socials.
+            </p>
+          </div>
+          <div class="contact__actions">
+            <Socials />
+            <a href={`mailto:${email}`} class="btn btn--primary">
+              Get in touch
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M7 17 17 7M8 7h9v9" />
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div class="tile tile--flush span-2 row-2 map">
+          <iframe
+            title="Map showing Toronto Metropolitan University"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5773.0822274818665!2d-79.38210845182277!3d43.6577148378784!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d4cb35431c1395%3A0xe8ed8bd69125d6f4!2sToronto%20Metropolitan%20University!5e0!3m2!1sen!2sca!4v1735095818170!5m2!1sen!2sca"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen></iframe>
+        </div>
+      </div>
+    </section>
+  </main>
+
+</Base>
+
+<style>
+  main {
+    padding-top: 24px;
+    padding-bottom: 56px;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    grid-auto-rows: minmax(190px, auto);
+  }
+  .hero__main {
+    display: flex;
+    min-height: 460px;
+    align-items: flex-end;
+    min-height: 420px;
+    background: var(--black);
+  }
+  .hero__bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    /* Show only the left half (stars + waves) so the baked-in logo stays out from behind the title */
+    width: 340%;
+    max-width: none;
+    height: 100%;
+    object-fit: cover;
+    object-position: left center;
+    opacity: 0.7;
+  }
+  .hero__main::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(1, 1, 1, 0.92) 10%, rgba(1, 1, 1, 0.1) 70%);
+  }
+  .hero__content {
+    position: relative;
+    z-index: 1;
+    padding: 32px;
+    display: grid;
+    gap: 14px;
+  }
+  .hero h1 {
+    font-size: clamp(3.4rem, 8vw, 5.8rem);
+    font-style: italic;
+    font-weight: 700;
+    line-height: 0.92;
+    text-transform: uppercase;
+  }
+  .hero h1 span {
+    color: var(--yellow);
+  }
+  .hero__content p {
+    color: #d8d7d3;
+    max-width: 380px;
+    font-size: 1.05rem;
+  }
+
+  .photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    min-height: 320px;
+  }
+
+  .intro {
+    display: flex;
+    align-items: center;
+  }
+  .intro p {
+    max-width: 90ch;
+    font-size: 1.15rem;
+    font-weight: 500;
+    line-height: 1.45;
+  }
+
+
+
+  /* ---------- About ---------- */
+  .about {
+    display: grid;
+    gap: 16px;
+    align-content: start;
+  }
+  .about p {
+    color: #cfcec9;
+    font-size: 1.08rem;
+    max-width: 80ch;
+  }
+  .about__cta {
+    color: var(--yellow);
+    font-weight: 600;
+  }
+
+  /* ---------- Contact ---------- */
+  .contact {
+    display: grid;
+    gap: 22px;
+    align-content: start;
+  }
+  .contact__identity {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 20px;
+  }
+  .contact__address {
+    display: grid;
+    gap: 4px;
+    font-family: var(--font-body);
+    font-style: normal;
+  }
+  .contact__org {
+    color: var(--yellow);
+    font-weight: 600;
+  }
+  .contact__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .contact__actions .btn {
+    white-space: nowrap;
+  }
+  .contact__item {
+    display: grid;
+    gap: 4px;
+  }
+  .contact__item p {
+    font-size: 1.05rem;
+  }
+  .map {
+    min-height: 340px;
+  }
+  .map iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    filter: grayscale(0.4) contrast(1.05);
+  }
+
+
+  @media (max-width: 600px) {
+    .hero__main {
+      min-height: 380px;
+    }
+    .tile {
+      padding: 22px;
+    }
+    .contact__identity {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .contact__logo {
+      grid-row: 1;
+    }
+  }
+</style>
