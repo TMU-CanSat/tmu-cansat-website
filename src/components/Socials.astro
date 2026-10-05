@@ -36,7 +36,7 @@ import { socials } from '../data/site';
     place-items: center;
     width: 42px;
     height: 42px;
-    border-radius: 50%;
+    border-radius: 0;
     color: var(--white);
     background: rgba(251, 251, 251, 0.06);
     border: 1px solid var(--line-strong);
@@ -61,13 +61,35 @@ import { socials } from '../data/site';
     background: var(--white);
     color: var(--black);
   }
-  .socials__link--instagram:hover {
-    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fd5949 45%, #d6249f 60%, #285aeb 90%);
+  .socials__link--instagram {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+  }
+  .socials__link--instagram::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(135deg, #6544c4 0%, #c72d76 58%, #de683d 100%);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  .socials__link--instagram:hover,
+  .socials__link--instagram:focus-visible {
+    border-color: rgba(251, 251, 251, 0.36);
+  }
+  .socials__link--instagram:hover::before,
+  .socials__link--instagram:focus-visible::before {
+    opacity: 1;
   }
   .socials__link--discord:hover {
     background: #5865f2;
   }
   @media (prefers-reduced-motion: reduce) {
+    .socials__link--instagram::before {
+      transition: none;
+    }
     .socials__link:hover {
       transform: none;
     }

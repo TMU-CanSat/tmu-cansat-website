@@ -4,80 +4,73 @@ import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import Sponsors from '../components/Sponsors.astro';
 import { email } from '../data/site';
+import fieldPhoto from '../assets/team_photo.jpg';
 import teamPhoto from '../assets/team_photo_2.jpg';
 import launchPhoto from '../assets/team_photo_3.png';
+
+const photos = [
+  { src: fieldPhoto, alt: 'TMU CanSat team members with their rocket and a Canadian flag at the launch field' },
+  { src: teamPhoto, alt: 'CanSat team members presenting their satellite hardware at a competition' },
+  { src: launchPhoto, alt: 'CanSat team members holding two rockets and a Canadian flag' },
+];
 ---
 
-<Base title="Sponsorships — TMU CanSat">
+<Base title="Sponsorships" description="Help TMU CanSat build, launch, and inspire future engineers. Download our 2026–27 sponsorship package and get in touch.">
   <Header />
   <main class="container">
     <header class="page-heading">
       <h1>Sponsorships</h1>
     </header>
 
-    <section id="why-sponsor" class="sponsorship-grid" aria-labelledby="why-sponsor-heading">
-      <div class="sponsorship-photos">
-        <div class="tile tile--flush sponsorship-photo">
-          <Image
-            src={teamPhoto}
-            alt="CanSat team members presenting their satellite hardware at a competition"
-            widths={[600, 900, 1200]}
-            sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 470px"
-            loading="eager"
-          />
-        </div>
-        <div class="tile tile--flush sponsorship-photo sponsorship-photo--launch">
-          <Image
-            src={launchPhoto}
-            alt="CanSat team members holding two rockets and a Canadian flag at the launch field"
-            widths={[600, 900, 1177]}
-            sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 470px"
-            loading="eager"
-          />
-        </div>
+    <section id="why-sponsor" class="section" aria-labelledby="why-sponsor-heading">
+      <div class="section-head">
+        <h2 id="why-sponsor-heading">Why sponsor us?</h2>
       </div>
 
-      <article class="tile sponsorship-intro">
-        <span class="eyebrow">Support student engineering</span>
-        <h2 id="why-sponsor-heading">Why sponsor us?</h2>
-        <p>
-          Help students turn classroom knowledge into working satellite systems. Your support puts hardware,
-          materials, and tools in the hands of our team and helps bring our designs to international competition.
-        </p>
-        <p>
-          Connect with future engineers through hands-on projects, student workshops, and outreach. Our sponsorship
-          package outlines opportunities to showcase your brand through social media, team apparel, and competition materials.
-        </p>
-      </article>
+      <div class="sponsorship-photos">
+        {photos.map((photo) => (
+          <div class="sponsorship-photo">
+            <Image
+              src={photo.src}
+              alt={photo.alt}
+              widths={[450, 750, 1200]}
+              sizes="(max-width: 600px) calc(100vw - 64px), (max-width: 1328px) 30vw, 400px"
+              loading="eager"
+            />
+          </div>
+        ))}
+      </div>
 
-      <article class="tile sponsorship-card sponsorship-package">
-        <span class="eyebrow">2026–27 season</span>
-        <h3>Sponsorship package</h3>
-        <p>Meet the team, explore our impact, and find out how your organization can get involved.</p>
-        <a
-          href="/downloads/tmu-cansat-2026-27-sponsorship-package.pdf"
-          class="btn btn--primary"
-          download="TMU CanSat - 2026-27 Sponsorship Package.pdf"
-          aria-label="Download 2026–27 sponsorship package (PDF)"
-        >
-          <span>Download package</span>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M12 3v12m-5-5 5 5 5-5M5 16v5h14v-5" />
-          </svg>
-        </a>
-      </article>
-
-      <article class="tile sponsorship-card">
-        <span class="eyebrow">Partner with us</span>
-        <h3>How to support the team</h3>
-        <p>From financial contributions to tools, materials, software, and services, there are many ways to help us build and compete.</p>
-        <a href={`mailto:${email}?subject=${encodeURIComponent('2026–27 TMU CanSat Sponsorship')}`} class="btn">
-          Get in touch
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M7 17 17 7M7 7h10v10" />
-          </svg>
-        </a>
-      </article>
+      <div class="bento bento--compact sponsorship-copy">
+        <div class="tile span-2 sponsorship-intro">
+          <p>
+            Help students turn classroom knowledge into working satellite systems. Your support puts hardware,
+            materials, and tools in the hands of our team and helps bring our designs to international competition.
+          </p>
+          <p>
+            Connect with future engineers through hands-on projects, student workshops, and outreach. Our sponsorship
+            package outlines opportunities to showcase your brand through social media, team apparel, and competition materials.
+          </p>
+        </div>
+        <div class="tile span-2 sponsorship-actions">
+          <span class="eyebrow">2026–27 season</span>
+          <p>Support the team through financial contributions, tools, materials, software, or services. Explore the official package to find out how your organization can get involved.</p>
+          <div class="sponsorship-buttons">
+            <a
+              href="/downloads/tmu-cansat-2026-27-sponsorship-package.pdf"
+              class="btn btn--primary"
+              download="TMU CanSat - 2026-27 Sponsorship Package.pdf"
+              aria-label="Download 2026–27 sponsorship package (PDF)"
+            >
+              <span>Download package</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 3v12m-5-5 5 5 5-5M5 16v5h14v-5" />
+              </svg>
+            </a>
+            <a href={`mailto:${email}?subject=${encodeURIComponent('2026–27 TMU CanSat Sponsorship')}`} class="btn">Get in touch <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+      </div>
     </section>
 
     <Sponsors />
@@ -85,105 +78,47 @@ import launchPhoto from '../assets/team_photo_3.png';
 </Base>
 
 <style>
-  main {
-    padding-top: 40px;
-    padding-bottom: 56px;
-  }
-  .page-heading {
-    margin-bottom: 24px;
-  }
-  .page-heading h1 {
-    font-size: clamp(2rem, 4vw, 3rem);
-    font-weight: 700;
-  }
-  .sponsorship-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1.35fr) repeat(2, minmax(0, 1fr));
-    gap: var(--gap);
-  }
   .sponsorship-photos {
     display: grid;
-    grid-template-rows: repeat(2, minmax(0, 1fr));
-    grid-row: span 2;
-    gap: var(--gap);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    padding: 32px;
+    border-bottom: 1px solid var(--line);
   }
   .sponsorship-photo {
-    min-height: 240px;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
   }
   .sponsorship-photo img {
-    position: absolute;
-    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center;
   }
-  .sponsorship-intro {
-    grid-column: span 2;
-    display: grid;
-    align-content: start;
-    gap: 18px;
-  }
-  .sponsorship-intro h2 {
-    color: var(--yellow);
-    font-size: clamp(1.8rem, 3vw, 2.4rem);
-  }
-  .sponsorship-grid p {
-    color: var(--muted);
-    line-height: 1.7;
-  }
-  .sponsorship-card {
+  .sponsorship-intro,
+  .sponsorship-actions {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 16px;
+    gap: 20px;
   }
-  .sponsorship-card h3 {
-    font-size: 1.55rem;
-    line-height: 1.2;
+  .sponsorship-copy p {
+    max-width: 62ch;
+    color: var(--muted);
+    line-height: 1.75;
   }
-  .sponsorship-package {
-    background: linear-gradient(145deg, rgba(250, 218, 0, 0.08), var(--tile-solid) 75%);
-    border-color: rgba(250, 218, 0, 0.28);
-  }
-  .sponsorship-card .btn {
+  .sponsorship-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
     margin-top: auto;
-    font-size: 0.9rem;
   }
-  .sponsorship-card .btn svg {
+  .sponsorship-buttons svg {
     flex-shrink: 0;
   }
-  @media (max-width: 900px) {
-    .sponsorship-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-    .sponsorship-photos {
-      grid-row: auto;
-    }
-    .sponsorship-intro {
-      grid-column: auto;
-    }
-  }
   @media (max-width: 600px) {
-    main {
-      padding-top: 28px;
-    }
-    .sponsorship-grid {
-      grid-template-columns: minmax(0, 1fr);
-    }
-    .sponsorship-photo {
-      min-height: 0;
-      aspect-ratio: 3 / 2;
-    }
     .sponsorship-photos {
-      grid-template-rows: auto auto;
-    }
-    .sponsorship-photo--launch {
-      aspect-ratio: 1177 / 637;
-    }
-    .sponsorship-intro,
-    .sponsorship-card {
-      padding: 24px;
+      grid-template-columns: minmax(0, 1fr);
+      padding: 20px;
     }
   }
 </style>
