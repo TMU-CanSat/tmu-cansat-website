@@ -7,7 +7,7 @@ import muesLogo from '../assets/mues-logo.png';
   <div class="section-head">
     <h2 id="sponsors-heading">Our Sponsors</h2>
   </div>
-  <ul class="bento bento--compact sponsor-grid">
+  <ul class="sponsor-grid">
     <li class="tile sponsor__logo">
       <Image src={muesLogo} alt="Metropolitan Undergraduate Engineering Society (MUES)" width={220} densities={[1, 2]} />
     </li>
@@ -16,8 +16,11 @@ import muesLogo from '../assets/mues-logo.png';
 
 <style>
   .sponsor-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
     margin: 0;
-    padding: 0;
+    padding: 32px;
     list-style: none;
   }
   .sponsor__logo {
@@ -26,5 +29,11 @@ import muesLogo from '../assets/mues-logo.png';
     min-height: 156px;
     padding: 24px;
     background: #fff;
+  }
+  @media (max-width: 600px) {
+    .sponsor-grid {
+      grid-template-columns: minmax(0, 1fr);
+      padding: 20px;
+    }
   }
 </style>

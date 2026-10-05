@@ -9,6 +9,33 @@ import { email } from '../data/site';
 import stars from '../assets/stars.png';
 import teamPhoto from '../assets/team_photo.jpg';
 import logo from '../assets/logo.png';
+
+const workshops = [
+  {
+    subject: 'Analysis',
+    title: 'Finite Element Analysis',
+    body: 'Students model loads, stress, and vibrations in aerospace components, exploring FEA fundamentals and modal analysis with ANSYS Mechanical.',
+    tools: 'ANSYS Mechanical',
+  },
+  {
+    subject: 'Communications',
+    title: 'Telemetry & Ground Station',
+    body: 'A complete wireless telemetry link brings sensor data to life, introducing students to embedded systems and live data transmission.',
+    tools: 'XBee radios · Raspberry Pi · Sensors',
+  },
+  {
+    subject: 'Design & programming',
+    title: 'Intro to Satellites',
+    body: 'A CanSat prototype makes satellite concepts tangible, alongside practical experience with parametric CAD and programming.',
+    tools: 'Onshape · Arduino IDE',
+  },
+  {
+    subject: 'Build & launch',
+    title: 'STECI CanSat Competition',
+    body: 'Through the Space Tech Through Education Initiative, teams of four to five students design, build, and launch a mini-satellite payload.',
+    tools: 'Payload packaging · System integration · Telemetry',
+  },
+];
 ---
 
 <Base>
@@ -17,7 +44,7 @@ import logo from '../assets/logo.png';
   <main id="top" class="container">
     <!-- ===== Hero ===== -->
     <section class="bento hero" aria-label="Introduction">
-      <div class="tile tile--flush span-2 row-2 hero__main">
+      <div class="tile tile--flush span-2 hero__main">
         <Image src={stars} alt="" class="hero__bg" widths={[800, 1400]} sizes="(max-width: 600px) 100vw, 600px" loading="eager" />
         <div class="hero__content">
           <h1>TMU<br /><span>CanSat</span></h1>
@@ -25,7 +52,7 @@ import logo from '../assets/logo.png';
         </div>
       </div>
 
-      <div class="tile tile--flush span-2 row-2 photo">
+      <div class="tile tile--flush span-2 photo">
         <Image
           src={teamPhoto}
           alt="TMU CanSat team members holding a Canadian flag beside their CanSat rocket"
@@ -35,12 +62,11 @@ import logo from '../assets/logo.png';
         />
       </div>
 
-      <div class="tile tile--yellow span-4 intro">
+      <div class="tile span-4 intro">
         <p>
-          TMU CanSat is a team of passionate students from Toronto Metropolitan University who love designing and
-          building Pico-Satellites. We're proud to be Canada's most successful team at the annual CANSAT competition.
-          We've earned awards for our innovative and award-winning designs. Driven by creativity and teamwork, we're
-          constantly pushing the boundaries of what's possible.
+          We're a group of TMU students who design and build small satellite payloads for the annual CanSat competition.
+          Since the team started in 2006, we've learned by making prototypes, testing them, and figuring out what needs
+          to change before launch. In 2026, we placed #1 in Canada.
         </p>
       </div>
 
@@ -54,16 +80,15 @@ import logo from '../assets/logo.png';
       <div class="bento">
         <article class="tile span-4 about">
           <p>
-            We are TMU CanSat - a team of passionate students from Toronto Metropolitan University who share a love for
-            space and engineering. Our focus? Designing and building Pico-Satellites that push the boundaries of what's
-            possible. Over the years, we've made a name for ourselves as Canada's most successful team at the annual
-            CANSAT competition, where we've tackled challenges, won awards, and proudly represented TMU on the global
-            stage. We had our ups and downs, but we are definitely in our ups now. Our team is a mix of students from
-            diverse disciplines and all kinds of backgrounds, working together to turn creative ideas into real, working
-            satellites. We're all about learning, innovating, and sharing our passion with the world. At TMU CanSat,
-            it's not just about the satellites, it's about the journey, the teamwork, and the love for what we do.
+            We're a student design team at Toronto Metropolitan University, turning classroom concepts into working
+            aerospace systems. Our CanSats combine sensors, microcontrollers, and custom structures in a compact payload
+            built to meet strict size and weight limits.
           </p>
-          <p class="about__cta">Come join us and see how high we can go!</p>
+          <p>
+            From early prototypes to launch day, we test for reliable communication, live data transmission, and safe
+            descent. We share that experience through workshops and student competitions that make space engineering
+            more accessible.
+          </p>
         </article>
       </div>
     </section>
@@ -74,6 +99,23 @@ import logo from '../assets/logo.png';
         <h2>Awards</h2>
       </div>
       <AwardsTimeline />
+    </section>
+
+    <section id="outreach" class="section" aria-labelledby="outreach-heading">
+      <div class="section-head outreach-heading">
+        <h2 id="outreach-heading">Beyond the competition</h2>
+        <p>Practical workshops and student projects bring aerospace engineering to the wider community.</p>
+      </div>
+      <div class="bento bento--compact">
+        {workshops.map((workshop) => (
+          <article class="tile span-2 workshop">
+            <span class="eyebrow">{workshop.subject}</span>
+            <h3>{workshop.title}</h3>
+            <p>{workshop.body}</p>
+            <span class="workshop__tools">{workshop.tools}</span>
+          </article>
+        ))}
+      </div>
     </section>
 
     <!-- ===== Sponsors ===== -->
@@ -127,20 +169,14 @@ import logo from '../assets/logo.png';
 </Base>
 
 <style>
-  main {
-    padding-top: 24px;
-    padding-bottom: 56px;
-  }
-
   /* ---------- Hero ---------- */
   .hero {
-    grid-auto-rows: minmax(190px, auto);
+    grid-auto-rows: auto;
   }
   .hero__main {
     display: flex;
     min-height: 460px;
     align-items: flex-end;
-    min-height: 420px;
     background: var(--black);
   }
   .hero__bg {
@@ -170,7 +206,6 @@ import logo from '../assets/logo.png';
   }
   .hero h1 {
     font-size: clamp(3.4rem, 8vw, 5.8rem);
-    font-style: italic;
     font-weight: 700;
     line-height: 0.92;
     text-transform: uppercase;
@@ -184,19 +219,23 @@ import logo from '../assets/logo.png';
     font-size: 1.05rem;
   }
 
+  .photo {
+    min-height: 320px;
+  }
   .photo img {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    min-height: 320px;
   }
 
   .intro {
     display: flex;
     align-items: center;
+    padding-block: 28px;
   }
   .intro p {
-    max-width: 90ch;
     font-size: 1.15rem;
     font-weight: 500;
     line-height: 1.45;
@@ -213,11 +252,31 @@ import logo from '../assets/logo.png';
   .about p {
     color: #cfcec9;
     font-size: 1.08rem;
-    max-width: 80ch;
   }
-  .about__cta {
-    color: var(--yellow);
-    font-weight: 600;
+  .workshop {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .workshop h3 {
+    font-size: 1.6rem;
+    line-height: 1.2;
+  }
+  .workshop p {
+    color: var(--muted);
+  }
+  .workshop__tools {
+    margin-top: auto;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+    color: #cfcec9;
+    font-size: 0.85rem;
+  }
+  @media (max-width: 760px) {
+    .outreach-heading {
+      flex-direction: column;
+      align-items: flex-start;
+    }
   }
 
   /* ---------- Contact ---------- */
@@ -272,12 +331,21 @@ import logo from '../assets/logo.png';
   }
 
 
+  @media (max-width: 960px) {
+    .photo {
+      min-height: 0;
+      aspect-ratio: 4 / 3;
+    }
+  }
   @media (max-width: 600px) {
     .hero__main {
       min-height: 380px;
     }
-    .tile {
-      padding: 22px;
+    .hero__content {
+      padding: 28px 20px;
+    }
+    .photo {
+      aspect-ratio: 4 / 3;
     }
     .contact__identity {
       grid-template-columns: minmax(0, 1fr);
