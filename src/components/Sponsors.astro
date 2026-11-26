@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import muesLogo from '../assets/mues-logo.png';
+import solidworksLogo from '../assets/solidworks-logo.png';
 ---
 
 <section id="sponsors" class="section" aria-labelledby="sponsors-heading">
@@ -10,6 +11,9 @@ import muesLogo from '../assets/mues-logo.png';
   <ul class="sponsor-grid">
     <li class="tile sponsor__logo">
       <Image src={muesLogo} alt="Metropolitan Undergraduate Engineering Society (MUES)" width={220} densities={[1, 2]} />
+    </li>
+    <li class="tile sponsor__logo">
+      <Image src={solidworksLogo} alt="SOLIDWORKS" width={240} densities={[1, 2]} />
     </li>
   </ul>
 </section>
